@@ -3,51 +3,37 @@ let playerName = "";
 let choiceList = [];
 let currentPage = null;
 
-///////////////////////////////////////////////////
-//////// TODOs ///////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// Fill in the blanks below to complete each TODO task.                       //
-////////////////////////////////////////////////////////////////////////////////
-
-// TODO: Prompt the user for their name. Store the name in the variable `playerName`.
+// prompt user to enter name
 
 playerName = prompt("What\'s your name?");
 
-// TODO: Create a function called `getCurrentPage()`. It should accept one
-// parameter, which is the `slug` for the current page. This function will fetch
-// the current page and return a page object using the `slug` value for a key.
+// store current page
 
 function getCurrentPage(slug){
-    currentPage = storyData [slug]
-    return currentPage;
+    currentPage = storyData[slug];
+    return currentPage; 
 }
 
-// TODO: Create a function called `recordChoice()` that will accept a `slug`
-// parameter and add it to the `choiceList` Array (probably using `push()`).
+// record choice
 
 function recordChoice(slug){
-    choiceList.push(slug);
+    choiceList.push(slug);    
 }
 
-// TODO: Create a function called `undoChoice()` that will remove the last
-// `slug` in the `choiceList` Array and then will return the last `slug` in the
-// `choiceList` Array.
+// allow user to undo choice/go back to previous page
 
-function undoChoice(slug){
-    choiceList.pop(slug);
+function undoChoice(){
+    choiceList.pop();     
+    return choiceList[choiceList.length-1];
 }
 
+// turn page
 
-// TODO: Create a function called `changePage()` that accepts a parameter called
-// `slug` and which handles "turning the page" in three steps:
-//  1. It should call the `recordChoice()` function (and give it the `slug` as
-//     a parameter.
-//  2. It should set the `currentPage` value by calling the `getCurrentPage()`
-//     function (and give it the `slug` as a parameter).
-//  3. It should invoke the `updatePage()` function (and give it the
-//     `currentPage` object as a parameter).
-
-
+function changePage(slug){
+    recordChoice(slug);
+    currentPage = getCurrentPage(slug);
+    updatePage(currentPage);
+}
 
 
 
@@ -65,6 +51,11 @@ function undoChoice(slug){
 // contains all of the choices, including the slug that each choice should    //
 // link to.                                                                   //
 ////////////////////////////////////////////////////////////////////////////////
+
+if(playerName.length == 0){
+    alert("We shall call you Super Crow.");
+    playerName = "Super Crow";
+}
 
 var storyData = {
     title: "The Crow and the Fox",
@@ -231,11 +222,15 @@ var storyData = {
 // created above.                                                             //
 ////////////////////////////////////////////////////////////////////////////////
 
+
+
 let title = document.querySelector('#story-title');
 title.innerHTML = storyData.title;
 
+
 let pageContent = document.querySelector('#story-text');
 let choicesUL = document.querySelector('#choices');
+
 
 function updatePage(page) {
     pageContent.innerHTML = page.text;
@@ -248,6 +243,8 @@ function updatePage(page) {
     }
     addEventListeners();
 }
+
+
 
 function addEventListeners(){
     let choices = document.querySelectorAll('#choices li');
@@ -267,6 +264,9 @@ undo.addEventListener('click', function(e){
     updatePage(currentPage);
 })
 
+
 currentPage = storyData.p1;
+recordChoice('p1');
 updatePage(currentPage);
+
 
